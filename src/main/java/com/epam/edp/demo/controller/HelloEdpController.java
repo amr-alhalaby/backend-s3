@@ -2,6 +2,8 @@ package com.epam.edp.demo.controller;
 
 import com.epam.edp.demo.service.S3DataService;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HelloEdpController {
+    private static final Logger log = LoggerFactory.getLogger(HelloEdpController.class);
+
     private final S3DataService s3DataService;
 
     public HelloEdpController(S3DataService s3DataService) {
@@ -18,7 +22,10 @@ public class HelloEdpController {
 
     @GetMapping(value = "/")
     public Map<String, String> root() {
-        return Map.of("content", s3DataService.getDataContent());
+        log.info("Handling request to /");
+        String content = s3DataService.getDataContent();
+        log.info("Returning S3 content for /");
+        return Map.of("content", content);
     }
 
     @GetMapping(value = "/api/hello")
